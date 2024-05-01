@@ -6,6 +6,7 @@ import { FC } from "react";
 import Loader from "src/components/Loader";
 
 import "./styles.module.scss";
+import styles from "./styles.module.scss";
 
 export type Props = ButtonProps & {
   wrapperClassName?: string;
@@ -22,27 +23,49 @@ const Button: FC<Props> = ({
 }) => {
   return (
     <div
-      className={classNames("btn-wrapper", wrapperClassName, {
-        "'disabled'": disabled,
+      className={classNames(styles["btn-wrapper"], wrapperClassName, {
+        [styles["disabled"]]: disabled,
       })}
     >
       <MuiButton
         {...props}
-        className={classNames("button", className, {
-          "'disabled'": disabled,
+        className={classNames(styles["button"], className, {
+          [styles["disabled"]]: disabled,
         })}
         disabled={disabled}
       >
-        {isLoading && <Loader className={"loader"} absolute />}
+        {isLoading && <Loader className={styles["loader"]} absolute />}
         <div
-          className={classNames("content", {
-            "'loading'": isLoading,
+          className={classNames(styles["content"], {
+            [styles["loading"]]: isLoading,
           })}
         >
           {children}
         </div>
       </MuiButton>
     </div>
+    // <div
+    //   className={classNames("btn-wrapper", wrapperClassName, {
+    //     "'disabled'": disabled,
+    //   })}
+    // >
+    //   <MuiButton
+    //     {...props}
+    //     className={classNames("button", className, {
+    //       "'disabled'": disabled,
+    //     })}
+    //     disabled={disabled}
+    //   >
+    //     {isLoading && <Loader className={"loader"} absolute />}
+    //     <div
+    //       className={classNames("content", {
+    //         "'loading'": isLoading,
+    //       })}
+    //     >
+    //       {children}
+    //     </div>
+    //   </MuiButton>
+    // </div>
   );
 };
 

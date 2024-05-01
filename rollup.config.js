@@ -4,8 +4,9 @@ import typescript from "@rollup/plugin-typescript";
 import { dts } from "rollup-plugin-dts";
 import scss from "rollup-plugin-scss";
 import postcss from "rollup-plugin-postcss";
+import { babel } from "@rollup/plugin-babel";
+// import eslint from "@rollup/plugin-eslint";
 
-//NEW
 import terser from "@rollup/plugin-terser";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 
@@ -27,18 +28,27 @@ export default [
       },
     ],
     plugins: [
-      resolve(),
-      commonjs(),
+      // scss({
+      //   output: "dist/styles.css",
+      // }),
+      peerDepsExternal(),
       typescript({
         tsconfig: "./tsconfig.json",
       }),
       postcss({
-        extract: true, // Extract CSS to a separate file
-        minimize: true, // Minimize CSS output
+        extract: false,
+        // minimize: true,
+        modules: true,
+        use: ["sass"],
+        extensions: [".scss"],
       }),
-      peerDepsExternal(),
+      babel({ exclude: "node_modules/**" }),
+      resolve(),
+      commonjs(),
+      // eslint({
+      //   exclude: ["src/styles/**"],
+      // }),
       terser(),
-      scss(),
     ],
   },
   {
@@ -49,6 +59,6 @@ export default [
     output: [{ file: "dist/index.d.ts", format: "esm" }],
     plugins: [dts()],
     // plugins: [dts.default()],
-    external: [/\.scss$/],
+    external: [/\.scss$/, "react", "react-dom"],
   },
 ];
